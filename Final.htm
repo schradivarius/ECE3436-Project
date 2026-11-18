@@ -3,7 +3,7 @@
 <title>Static Call Graph - [.\Final.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image .\Final.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 6240002: Last Updated: Tue Nov 17 16:52:15 2026
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 6240002: Last Updated: Tue Nov 17 22:59:36 2026
 <BR><P>
 <H3>Maximum Stack Usage =          0 bytes + Unknown(Functions without stacksize, Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -22,8 +22,8 @@ Functions with no stack information
  <LI><a href="#[7f]">portCconfig</a>
  <LI><a href="#[80]">portDconfig</a>
  <LI><a href="#[81]">portFconfig</a>
- <LI><a href="#[83]">specificAim1_LEDs</a>
- <LI><a href="#[86]">specificAim2_buttons</a>
+ <LI><a href="#[86]">specificAim1_LEDs</a>
+ <LI><a href="#[83]">specificAim2_buttons</a>
  <LI><a href="#[87]">specificAim3_buzzer</a>
  <LI><a href="#[88]">specificAim4_motor</a>
 </UL>
@@ -586,7 +586,7 @@ Global Symbols
 <BR>[Address Reference Count : 1]<UL><LI> startup.o(RESET)
 </UL>
 <P><STRONG><a name="[7c]"></a>Start</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, main.o(.text))
-<BR><BR>[Calls]<UL><LI><a href="#[83]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;specificAim1_LEDs
+<BR><BR>[Calls]<UL><LI><a href="#[83]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;specificAim2_buttons
 <LI><a href="#[81]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;portFconfig
 <LI><a href="#[80]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;portDconfig
 <LI><a href="#[7f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;portCconfig
@@ -601,14 +601,14 @@ Global Symbols
 <BR><BR>[Called By]<UL><LI><a href="#[7c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Start
 </UL>
 
-<P><STRONG><a name="[85]"></a>SysTick_Wait</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, systicktimer_setup.o(MySysTickCode))
+<P><STRONG><a name="[85]"></a>SysTick_Wait</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, systicktimer_setup.o(MySysTickCode), UNUSED)
 <BR><BR>[Called By]<UL><LI><a href="#[84]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SysTick_Wait10ms
 </UL>
 
-<P><STRONG><a name="[84]"></a>SysTick_Wait10ms</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, systicktimer_setup.o(MySysTickCode))
+<P><STRONG><a name="[84]"></a>SysTick_Wait10ms</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, systicktimer_setup.o(MySysTickCode), UNUSED)
 <BR><BR>[Calls]<UL><LI><a href="#[85]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SysTick_Wait
 </UL>
-<BR>[Called By]<UL><LI><a href="#[83]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;specificAim1_LEDs
+<BR>[Called By]<UL><LI><a href="#[86]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;specificAim1_LEDs
 </UL>
 
 <P><STRONG><a name="[7d]"></a>portAconfig</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, portaconfig.o(PortA_Config))
@@ -631,13 +631,13 @@ Global Symbols
 <BR><BR>[Called By]<UL><LI><a href="#[7c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Start
 </UL>
 
-<P><STRONG><a name="[83]"></a>specificAim1_LEDs</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, specificaim1_leds.o(SA1CodeArea))
+<P><STRONG><a name="[86]"></a>specificAim1_LEDs</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, specificaim1_leds.o(SA1CodeArea), UNUSED)
 <BR><BR>[Calls]<UL><LI><a href="#[84]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SysTick_Wait10ms
 </UL>
-<BR>[Called By]<UL><LI><a href="#[7c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Start
-</UL>
 
-<P><STRONG><a name="[86]"></a>specificAim2_buttons</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, specificaim2_buttons.o(SA2CodeArea), UNUSED)
+<P><STRONG><a name="[83]"></a>specificAim2_buttons</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, specificaim2_buttons.o(SA2CodeArea))
+<BR><BR>[Called By]<UL><LI><a href="#[7c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Start
+</UL>
 
 <P><STRONG><a name="[87]"></a>specificAim3_buzzer</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, specificaim3_buzzer.o(SA3CodeArea), UNUSED)
 

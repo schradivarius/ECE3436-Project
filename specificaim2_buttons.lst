@@ -4,56 +4,83 @@
 ARM Macro Assembler    Page 1 
 
 
-    1 00000000                 THUMB
+    1 00000000         
     2 00000000         
-    3 00000000 400063FC 
-                       GPIO_PORTC_DATA_R
-                               EQU              0x400063FC  ; GPIO Data registe
-                                                            r
+    3 00000000                 THUMB
     4 00000000         
-    5 00000000         ; **
-    6 00000000         ; ** CODE AREA IN ROM **
-    7 00000000         ; **
-    8 00000000                 AREA             SA2CodeArea, CODE, READONLY, AL
-IGN=2
-    9 00000000         
-   10 00000000                 EXPORT           specificAim2_buttons
-   11 00000000         
+    5 00000000 400063FC 
+                       GPIO_PORTC_DATA_R
+                               EQU              0x400063FC  ; GPIO Data Registe
+                                                            r
+    6 00000000         
+    7 00000000         
+    8 00000000         ; ******************************************************
+                       ***************
+    9 00000000         ; *************************** CODE AREA IN ROM *********
+                       ***************
+   10 00000000         ; ******************************************************
+                       ***************
+   11 00000000                 AREA             SA2CodeArea, CODE, READONLY, AL
+IGN=2 
+                                                            ; Flash ROM
    12 00000000         
-   13 00000000         specificAim2_buttons
-   14 00000000 4C04            LDR              R4, =GPIO_PORTC_DATA_R ; R4 = &
-                                                            GPIO_PORTC_DATA_R
-   15 00000002 F04F 0500       MOV              R5, #0      ; R5 will hold the 
-                                                            "shadow" state
-   16 00000006         
-   17 00000006         Aim2_Loop
-   18 00000006         ; read the current state of Port C data register
-   19 00000006 6826            LDR              R6, [R4]
-   20 00000008 F006 0630       AND              R6, R6, #0x30 ; mask for PC5 an
-                                                            d PC4 bits
-   21 0000000C         
-   22 0000000C         ; if the state has changed, update the shadow register
-   23 0000000C 42AE            CMP              R6, R5
-   24 0000000E D0FA            BEQ              Aim2_Loop   ; if same, no chang
-                                                            e -> keep looping
-   25 00000010 4635            MOV              R5, R6      ; update shadow sta
-                                                            te
-   26 00000012         
-   27 00000012         ; optional: mirror the input state to an output port for
-                        easy observation
-   28 00000012         ; for example, you could write R5 to Port B data registe
-                       r here
-   29 00000012         
-   30 00000012 E7F8            B                Aim2_Loop   ; repeat forever
-   31 00000014         
-   32 00000014         
-   33 00000014                 ALIGN
-   34 00000014                 END
+   13 00000000         
+   14 00000000         
+   15 00000000                 EXPORT           specificAim2_buttons
+   16 00000000         
+   17 00000000         
+   18 00000000         
+   19 00000000         
+   20 00000000         specificAim2_buttons
+   21 00000000         ; subroutine code goes here
+   22 00000000         
+   23 00000000 4C01            LDR              R4, =GPIO_PORTC_DATA_R ; R4 = P
+                                                            ort C data register
+                                                             address
+   24 00000002         
+   25 00000002         Aim2_Loop
+   26 00000002 6825            LDR              R5, [R4]    ; read PC4, PC5 but
+                                                            ton states into R5
+   27 00000004         ; (logic analyzer probes the pins directly;
+   28 00000004         ;  R5 is for debugger visibility too)
+   29 00000004 E7FD            B                Aim2_Loop   ; repeat forever - 
+                                                            "continuously displ
+                                                            ay"
+   30 00000006         
+   31 00000006         
+   32 00000006         
+   33 00000006         
+   34 00000006         
+   35 00000006         
+   36 00000006         
+   37 00000006         
+   38 00000006         
+   39 00000006         
+   40 00000006         
+   41 00000006         
+   42 00000006         
+   43 00000006         
+   44 00000006         
+   45 00000006         
+   46 00000006         
+
+
+
+ARM Macro Assembler    Page 2 
+
+
+   47 00000006         
+   48 00000006         
+   49 00000006 4770            BX               LR          ; return from subro
+                                                            utine
+   50 00000008         
+   51 00000008                 ALIGN
+   52 00000008                 END
               400063FC 
 Command Line: --debug --xref --diag_suppress=9931,A1950W --cpu=Cortex-M4 --fpu=
 SoftVFP --depend=.\specificaim2_buttons.d -o.\specificaim2_buttons.o -I.\RTE\_F
-inal -IC:\Users\theab\AppData\Local\Arm\Packs\ARM\CMSIS\6.3.0\CMSIS\Core\Includ
-e -IC:\Users\theab\AppData\Local\Arm\Packs\Keil\TM4C_DFP\1.1.0\Device\Include\T
+inal -IC:\Users\sparr\AppData\Local\Arm\Packs\ARM\CMSIS\6.3.0\CMSIS\Core\Includ
+e -IC:\Users\sparr\AppData\Local\Arm\Packs\Keil\TM4C_DFP\1.1.0\Device\Include\T
 M4C123 --predefine="__EVAL SETA 1" --predefine="__UVISION_VERSION SETA 543" --p
 redefine="TM4C123GH6PM SETA 1" --predefine="_RTE_ SETA 1" --list=.\specificaim2
 _buttons.lst specificAim2_buttons.s
@@ -63,20 +90,19 @@ _buttons.lst specificAim2_buttons.s
 ARM Macro Assembler    Page 1 Alphabetic symbol ordering
 Relocatable symbols
 
-Aim2_Loop 00000006
+Aim2_Loop 00000002
 
 Symbol: Aim2_Loop
    Definitions
-      At line 17 in file specificAim2_buttons.s
+      At line 25 in file specificAim2_buttons.s
    Uses
-      At line 24 in file specificAim2_buttons.s
-      At line 30 in file specificAim2_buttons.s
-
+      At line 29 in file specificAim2_buttons.s
+Comment: Aim2_Loop used once
 SA2CodeArea 00000000
 
 Symbol: SA2CodeArea
    Definitions
-      At line 8 in file specificAim2_buttons.s
+      At line 11 in file specificAim2_buttons.s
    Uses
       None
 Comment: SA2CodeArea unused
@@ -84,9 +110,9 @@ specificAim2_buttons 00000000
 
 Symbol: specificAim2_buttons
    Definitions
-      At line 13 in file specificAim2_buttons.s
+      At line 20 in file specificAim2_buttons.s
    Uses
-      At line 10 in file specificAim2_buttons.s
+      At line 15 in file specificAim2_buttons.s
 Comment: specificAim2_buttons used once
 3 symbols
 
@@ -99,9 +125,9 @@ GPIO_PORTC_DATA_R 400063FC
 
 Symbol: GPIO_PORTC_DATA_R
    Definitions
-      At line 3 in file specificAim2_buttons.s
+      At line 5 in file specificAim2_buttons.s
    Uses
-      At line 14 in file specificAim2_buttons.s
+      At line 23 in file specificAim2_buttons.s
 Comment: GPIO_PORTC_DATA_R used once
 1 symbol
 340 symbols in table

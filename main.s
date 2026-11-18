@@ -72,8 +72,8 @@ Start
 	NOP
 
 ;	Test Subroutines
-	BL		specificAim1_LEDs
-;	BL		specificAim2_buttons
+;	BL		specificAim1_LEDs
+	BL		specificAim2_buttons
 ;	BL		specificAim3_buzzer
 ;	BL		specificAim4_motor
 	NOP

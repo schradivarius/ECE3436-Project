@@ -23,8 +23,8 @@ NVIC_ST_CURRENT_R	EQU 0xE000E018	; SysTick Current Value Register (STCURRENT)
 ; *********************************************************************
 ; *************************** CODE AREA IN ROM ************************
 ; *********************************************************************
-	AREA    MySysTickCode, CODE, READONLY, ALIGN=2		; Flash ROM	    
-
+	AREA    MySysTickCode, CODE, READONLY, ALIGN=2		; Flash ROM
+		    
 	ALIGN
 		  
 
