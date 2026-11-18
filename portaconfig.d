@@ -1,0 +1,1 @@
+.\portaconfig.o: portAconfig.s

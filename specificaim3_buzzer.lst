@@ -1,0 +1,87 @@
+
+
+
+ARM Macro Assembler    Page 1 
+
+
+    1 00000000         
+    2 00000000         
+    3 00000000         
+    4 00000000                 THUMB
+    5 00000000         
+    6 00000000         
+    7 00000000         ; ******************************************************
+                       ***************
+    8 00000000         ; *************************** CODE AREA IN ROM *********
+                       ***************
+    9 00000000         ; ******************************************************
+                       ***************
+   10 00000000                 AREA             SA3CodeArea, CODE, READONLY, AL
+IGN=2 
+                                                            ; Flash ROM
+   11 00000000         
+   12 00000000         
+   13 00000000         
+   14 00000000                 EXPORT           specificAim3_buzzer
+   15 00000000         
+   16 00000000         
+   17 00000000         
+   18 00000000         
+   19 00000000         specificAim3_buzzer
+   20 00000000         ; subroutine code goes here
+   21 00000000         
+   22 00000000         
+   23 00000000         
+   24 00000000         
+   25 00000000         
+   26 00000000         
+   27 00000000         
+   28 00000000         
+   29 00000000         
+   30 00000000         
+   31 00000000         
+   32 00000000         
+   33 00000000         
+   34 00000000         
+   35 00000000         
+   36 00000000         
+   37 00000000         
+   38 00000000         
+   39 00000000         
+   40 00000000         
+   41 00000000 4770            BX               LR          ; return from subro
+                                                            utine
+   42 00000002         
+   43 00000002 00 00           ALIGN
+   44 00000004                 END
+Command Line: --debug --xref --diag_suppress=9931,A1950W --cpu=Cortex-M4 --fpu=
+SoftVFP --depend=.\specificaim3_buzzer.d -o.\specificaim3_buzzer.o -I.\RTE\_Fin
+al -IC:\Users\theab\AppData\Local\Arm\Packs\ARM\CMSIS\6.3.0\CMSIS\Core\Include 
+-IC:\Users\theab\AppData\Local\Arm\Packs\Keil\TM4C_DFP\1.1.0\Device\Include\TM4
+C123 --predefine="__EVAL SETA 1" --predefine="__UVISION_VERSION SETA 543" --pre
+define="TM4C123GH6PM SETA 1" --predefine="_RTE_ SETA 1" --list=.\specificaim3_b
+uzzer.lst specificAim3_buzzer.s
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Relocatable symbols
+
+SA3CodeArea 00000000
+
+Symbol: SA3CodeArea
+   Definitions
+      At line 10 in file specificAim3_buzzer.s
+   Uses
+      None
+Comment: SA3CodeArea unused
+specificAim3_buzzer 00000000
+
+Symbol: specificAim3_buzzer
+   Definitions
+      At line 19 in file specificAim3_buzzer.s
+   Uses
+      At line 14 in file specificAim3_buzzer.s
+Comment: specificAim3_buzzer used once
+2 symbols
+336 symbols in table

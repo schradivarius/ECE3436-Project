@@ -1,0 +1,1 @@
+.\portfconfig.o: portFconfig.s

@@ -1,0 +1,320 @@
+
+
+
+ARM Macro Assembler    Page 1 
+
+
+    1 00000000         ;****************** main.s ***************
+    2 00000000         ; Program written by: Dr. D
+    3 00000000         ; Date Created: 4/8/21
+    4 00000000         ; Last Modified: 4/8/21
+    5 00000000         ; Brief description of the program: Code to configure th
+                       e System Clock
+    6 00000000         ; 
+    7 00000000         
+    8 00000000         
+    9 00000000         ; ******************************************************
+                       **************
+   10 00000000         ; ********************* EQU Label Definitions **********
+                       **************
+   11 00000000         ; ******************************************************
+                       **************
+   12 00000000         
+   13 00000000         ; SysTick Timer addresses
+   14 00000000 E000E010 
+                       NVIC_ST_CTRL_R
+                               EQU              0xE000E010  ; SysTick Control a
+                                                            nd Status Register 
+                                                            (STCTRL)
+   15 00000000 E000E014 
+                       NVIC_ST_RELOAD_R
+                               EQU              0xE000E014  ; SysTick Reload Va
+                                                            lue register (STREL
+                                                            OAD)
+   16 00000000 E000E018 
+                       NVIC_ST_CURRENT_R
+                               EQU              0xE000E018  ; SysTick Current V
+                                                            alue Register (STCU
+                                                            RRENT)
+   17 00000000         ;DELAY    EQU 400000  ; 400,000 ticks = 5ms at 80MHz
+   18 00000000         
+   19 00000000         
+   20 00000000                 THUMB
+   21 00000000         
+   22 00000000         
+   23 00000000         ; ******************************************************
+                       ***************
+   24 00000000         ; *************************** CODE AREA IN ROM *********
+                       ***************
+   25 00000000         ; ******************************************************
+                       ***************
+   26 00000000                 AREA             MySysTickCode, CODE, READONLY, 
+ALIGN=2 
+                                                            ; Flash ROM     
+   27 00000000         
+   28 00000000                 ALIGN
+   29 00000000         
+   30 00000000         
+   31 00000000                 EXPORT           SysTick_Config
+   32 00000000                 EXPORT           SysTick_Wait
+   33 00000000                 EXPORT           SysTick_Wait10ms
+   34 00000000         
+   35 00000000         SysTick_Config
+   36 00000000         ; Step 1: clear the SysTick enable bit to turn off durin
+                       g initialization
+   37 00000000 4915            LDR              R1, =NVIC_ST_CTRL_R
+
+
+
+ARM Macro Assembler    Page 2 
+
+
+   38 00000002 6808            LDR              R0, [R1]
+   39 00000004 F020 0001       BIC              R0, #1
+   40 00000008 6008            STR              R0, [R1]
+   41 0000000A         
+   42 0000000A         ; Step 2: reload the counter start value
+   43 0000000A 4914            LDR              R1, =NVIC_ST_RELOAD_R
+   44 0000000C F06F 407F       LDR              R0, =0x00FFFFFF ; maximum reloa
+                                                            d value 0x00FF.FFFF
+                                                             = 16,777,215
+   45 00000010 6008            STR              R0, [R1]
+   46 00000012         
+   47 00000012         ; Step 3: write to current value register to clear the c
+                       ounter
+   48 00000012 4913            LDR              R1, =NVIC_ST_CURRENT_R
+   49 00000014 6808            LDR              R0, [R1]
+   50 00000016 F040 0001       ORR              R0, #0x1
+   51 0000001A 6008            STR              R0, [R1]
+   52 0000001C         
+   53 0000001C         ; Step 4: write the desired clock mode (core clock) to t
+                       he control register
+   54 0000001C 490E            LDR              R1, =NVIC_ST_CTRL_R
+   55 0000001E 6808            LDR              R0, [R1]
+   56 00000020 F040 0005       ORR              R0, #0x05   ; ENABLE and CLK_SR
+                                                            C bits set
+   57 00000024 6008            STR              R0, [R1]
+   58 00000026 4770            BX               LR
+   59 00000028         
+   60 00000028         
+   61 00000028         
+   62 00000028         ; ******************************************************
+                       ****************************************
+   63 00000028         
+   64 00000028         ; ******************** SysTick Wait ********************
+                        
+   65 00000028         ; Time delay using busy wait. 
+   66 00000028         ; Input: R0 --> # to load into SysTick Timer
+   67 00000028         ; Output: none
+   68 00000028         ; Modifies: R0, R1, R3
+   69 00000028         ; Function Calls: NO
+   70 00000028         
+   71 00000028         
+   72 00000028         SysTick_Wait
+   73 00000028         ; load counter with desired number of ticks
+   74 00000028 490C            LDR              R1, =NVIC_ST_RELOAD_R ; R1 = &N
+                                                            VIC_ST_RELOAD_R
+   75 0000002A         
+   76 0000002A         ; counter ticks N + 1 times so need to subtract 1
+   77 0000002A F1A0 0001       SUB              R0, #1
+   78 0000002E 6008            STR              R0, [R1]
+   79 00000030         
+   80 00000030         ; reset count bit
+   81 00000030 490B            LDR              R1, =NVIC_ST_CURRENT_R
+   82 00000032 6009            STR              R1, [R1]
+   83 00000034         
+   84 00000034         ; get address of register that has COUNT bit
+   85 00000034 4908            LDR              R1, =NVIC_ST_CTRL_R ; R1 = & NV
+                                                            IC_ST_CTRL_R
+   86 00000036         
+   87 00000036         
+
+
+
+ARM Macro Assembler    Page 3 
+
+
+   88 00000036         SysTick_Wait_loop
+   89 00000036 680B            LDR              R3, [R1]
+   90 00000038 F413 3380       ANDS             R3, R3, #0x00010000 ; COUNT bit
+                                                             is bit 16
+   91 0000003C D0FB            BEQ              SysTick_Wait_loop ; if COUNT ==
+                                                             0, the counter has
+                                                             not hit zero, so k
+                                                            eep waiting
+   92 0000003E 4770            BX               LR
+   93 00000040         
+   94 00000040         
+   95 00000040         
+   96 00000040         ; ******************************************************
+                       ********************************************
+   97 00000040         ; ******************** SysTick Wait 10ms ***************
+                       ***** 
+   98 00000040         ; Time delay using busy wait. 
+   99 00000040         ; Input: R0 --> # of times to wait 10 ms before returnin
+                       g
+  100 00000040         ; Output: none
+  101 00000040         ; Modifies: R0, R4
+  102 00000040         ; Function Calls: YES
+  103 00000040         
+  104 00000040         ;DELAY10MS EQU 800000   ; 800,000 ticks of 80MHz clock =
+                        10ms
+  105 00000040 00027100 
+                       DELAY10MS
+                               EQU              160000      ; 160,000 ticks of 
+                                                            16MHz clock = 10ms
+  106 00000040         
+  107 00000040         SysTick_Wait10ms
+  108 00000040 B510            PUSH             {R4, LR}    ; save current valu
+                                                            e of R4 and LR
+  109 00000042 0004            MOVS             R4, R0      ; R4 = R0 = remaini
+                                                            ngWaits
+  110 00000044 D004            BEQ              SysTick_Wait10ms_done 
+                                                            ; R4 == 0, done
+  111 00000046         SysTick_Wait10ms_loop
+  112 00000046 4807            LDR              R0, =DELAY10MS ; R0 = DELAY10MS
+                                                            
+  113 00000048 F7FF FFFE       BL               SysTick_Wait ; expects R0 to ho
+                                                            ld # of ticks to ti
+                                                            me
+  114 0000004C 1E64            SUBS             R4, R4, #1  ; R4 = R4 -1; remai
+                                                            ning10msWaits--
+  115 0000004E D8FA            BHI              SysTick_Wait10ms_loop ; if (R4 
+                                                            > 0), wait another 
+                                                            10ms
+  116 00000050         SysTick_Wait10ms_done
+  117 00000050 E8BD 4010       POP              {R4, LR}
+  118 00000054 4770            BX               LR
+  119 00000056         
+  120 00000056         
+  121 00000056         
+  122 00000056         
+  123 00000056 00 00           ALIGN                        ; make sure the end
+                                                             of this section is
+                                                             aligned
+  124 00000058                 END                          ; end of file
+
+
+
+ARM Macro Assembler    Page 4 
+
+
+              E000E010 
+              E000E014 
+              E000E018 
+              00027100 
+Command Line: --debug --xref --diag_suppress=9931,A1950W --cpu=Cortex-M4 --fpu=
+SoftVFP --depend=.\systicktimer_setup.d -o.\systicktimer_setup.o -I.\RTE\_Final
+ -IC:\Users\theab\AppData\Local\Arm\Packs\ARM\CMSIS\6.3.0\CMSIS\Core\Include -I
+C:\Users\theab\AppData\Local\Arm\Packs\Keil\TM4C_DFP\1.1.0\Device\Include\TM4C1
+23 --predefine="__EVAL SETA 1" --predefine="__UVISION_VERSION SETA 543" --prede
+fine="TM4C123GH6PM SETA 1" --predefine="_RTE_ SETA 1" --list=.\systicktimer_set
+up.lst SysTickTimer_Setup.s
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Relocatable symbols
+
+MySysTickCode 00000000
+
+Symbol: MySysTickCode
+   Definitions
+      At line 26 in file SysTickTimer_Setup.s
+   Uses
+      None
+Comment: MySysTickCode unused
+SysTick_Config 00000000
+
+Symbol: SysTick_Config
+   Definitions
+      At line 35 in file SysTickTimer_Setup.s
+   Uses
+      At line 31 in file SysTickTimer_Setup.s
+Comment: SysTick_Config used once
+SysTick_Wait 00000028
+
+Symbol: SysTick_Wait
+   Definitions
+      At line 72 in file SysTickTimer_Setup.s
+   Uses
+      At line 32 in file SysTickTimer_Setup.s
+      At line 113 in file SysTickTimer_Setup.s
+
+SysTick_Wait10ms 00000040
+
+Symbol: SysTick_Wait10ms
+   Definitions
+      At line 107 in file SysTickTimer_Setup.s
+   Uses
+      At line 33 in file SysTickTimer_Setup.s
+Comment: SysTick_Wait10ms used once
+SysTick_Wait10ms_done 00000050
+
+Symbol: SysTick_Wait10ms_done
+   Definitions
+      At line 116 in file SysTickTimer_Setup.s
+   Uses
+      At line 110 in file SysTickTimer_Setup.s
+Comment: SysTick_Wait10ms_done used once
+SysTick_Wait10ms_loop 00000046
+
+Symbol: SysTick_Wait10ms_loop
+   Definitions
+      At line 111 in file SysTickTimer_Setup.s
+   Uses
+      At line 115 in file SysTickTimer_Setup.s
+Comment: SysTick_Wait10ms_loop used once
+SysTick_Wait_loop 00000036
+
+Symbol: SysTick_Wait_loop
+   Definitions
+      At line 88 in file SysTickTimer_Setup.s
+   Uses
+      At line 91 in file SysTickTimer_Setup.s
+Comment: SysTick_Wait_loop used once
+7 symbols
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Absolute symbols
+
+DELAY10MS 00027100
+
+Symbol: DELAY10MS
+   Definitions
+      At line 105 in file SysTickTimer_Setup.s
+   Uses
+      At line 112 in file SysTickTimer_Setup.s
+Comment: DELAY10MS used once
+NVIC_ST_CTRL_R E000E010
+
+Symbol: NVIC_ST_CTRL_R
+   Definitions
+      At line 14 in file SysTickTimer_Setup.s
+   Uses
+      At line 37 in file SysTickTimer_Setup.s
+      At line 54 in file SysTickTimer_Setup.s
+      At line 85 in file SysTickTimer_Setup.s
+
+NVIC_ST_CURRENT_R E000E018
+
+Symbol: NVIC_ST_CURRENT_R
+   Definitions
+      At line 16 in file SysTickTimer_Setup.s
+   Uses
+      At line 48 in file SysTickTimer_Setup.s
+      At line 81 in file SysTickTimer_Setup.s
+
+NVIC_ST_RELOAD_R E000E014
+
+Symbol: NVIC_ST_RELOAD_R
+   Definitions
+      At line 15 in file SysTickTimer_Setup.s
+   Uses
+      At line 43 in file SysTickTimer_Setup.s
+      At line 74 in file SysTickTimer_Setup.s
+
+4 symbols
+347 symbols in table

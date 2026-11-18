@@ -1,0 +1,1 @@
+.\portcconfig.o: portCconfig.s

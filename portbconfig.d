@@ -1,0 +1,1 @@
+.\portbconfig.o: portBconfig.s

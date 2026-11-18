@@ -1,0 +1,1 @@
+.\portdconfig.o: portDconfig.s

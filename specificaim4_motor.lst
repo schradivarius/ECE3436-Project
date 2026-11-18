@@ -1,0 +1,86 @@
+
+
+
+ARM Macro Assembler    Page 1 
+
+
+    1 00000000         
+    2 00000000         
+    3 00000000                 THUMB
+    4 00000000         
+    5 00000000         
+    6 00000000         ; ******************************************************
+                       ***************
+    7 00000000         ; *************************** CODE AREA IN ROM *********
+                       ***************
+    8 00000000         ; ******************************************************
+                       ***************
+    9 00000000                 AREA             SA4CodeArea, CODE, READONLY, AL
+IGN=2 
+                                                            ; Flash ROM
+   10 00000000         
+   11 00000000         
+   12 00000000         
+   13 00000000                 EXPORT           specificAim4_motor
+   14 00000000         
+   15 00000000         
+   16 00000000         
+   17 00000000         
+   18 00000000         specificAim4_motor
+   19 00000000         ; subroutine code goes here
+   20 00000000         
+   21 00000000         
+   22 00000000         
+   23 00000000         
+   24 00000000         
+   25 00000000         
+   26 00000000         
+   27 00000000         
+   28 00000000         
+   29 00000000         
+   30 00000000         
+   31 00000000         
+   32 00000000         
+   33 00000000         
+   34 00000000         
+   35 00000000         
+   36 00000000         
+   37 00000000         
+   38 00000000         
+   39 00000000         
+   40 00000000 4770            BX               LR          ; return from subro
+                                                            utine
+   41 00000002         
+   42 00000002 00 00           ALIGN
+   43 00000004                 END
+Command Line: --debug --xref --diag_suppress=9931,A1950W --cpu=Cortex-M4 --fpu=
+SoftVFP --depend=.\specificaim4_motor.d -o.\specificaim4_motor.o -I.\RTE\_Final
+ -IC:\Users\theab\AppData\Local\Arm\Packs\ARM\CMSIS\6.3.0\CMSIS\Core\Include -I
+C:\Users\theab\AppData\Local\Arm\Packs\Keil\TM4C_DFP\1.1.0\Device\Include\TM4C1
+23 --predefine="__EVAL SETA 1" --predefine="__UVISION_VERSION SETA 543" --prede
+fine="TM4C123GH6PM SETA 1" --predefine="_RTE_ SETA 1" --list=.\specificaim4_mot
+or.lst specificAim4_motor.s
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Relocatable symbols
+
+SA4CodeArea 00000000
+
+Symbol: SA4CodeArea
+   Definitions
+      At line 9 in file specificAim4_motor.s
+   Uses
+      None
+Comment: SA4CodeArea unused
+specificAim4_motor 00000000
+
+Symbol: specificAim4_motor
+   Definitions
+      At line 18 in file specificAim4_motor.s
+   Uses
+      At line 13 in file specificAim4_motor.s
+Comment: specificAim4_motor used once
+2 symbols
+336 symbols in table
